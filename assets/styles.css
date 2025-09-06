@@ -36,7 +36,10 @@
   --radius-lg: 20px;
   --radius-xl: 32px;
 }
-
+button {
+  border: 0;
+  background: transparent;
+}
 /* Utility Classes */
 .flex {
   display: flex;
@@ -124,6 +127,9 @@ body {
   font-size: var(--font-base);
 }
 
+h2 {
+  font-size: var(--font-3xl);
+}
 /* Layout */
 .app-container {
   max-width: 98%;
@@ -139,7 +145,6 @@ body {
   color: var(--white);
   font-size: var(--font-4xl);
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-  margin-bottom: var(--space-sm);
 }
 
 .main-content {
@@ -157,6 +162,11 @@ body {
   }
   .app-container {
     padding: var(--space-md);
+  }
+  .app-header {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
 }
 
@@ -230,7 +240,6 @@ body {
 }
 
 .current-track-info h2 {
-  font-size: var(--font-3xl);
   color: var(--dark);
   margin-bottom: var(--space-sm);
 }
@@ -459,16 +468,9 @@ body {
   flex-shrink: 0;
 }
 
-.playlist-item.active .surah-number,
-.playlist-item.active .view-text-btn {
-  background: var(--white);
-  color: var(--primary);
-}
-.playlist-item.active .play-indicator {
-  opacity: 1;
-}
 .surah-info {
   flex: 1;
+  display: flex;
 }
 
 .surah-name {
@@ -482,7 +484,6 @@ body {
 }
 
 .play-indicator {
-  margin-right: var(--space-md);
   opacity: 0;
   transition: opacity 0.3s ease;
   transform: rotate(180deg);
@@ -497,28 +498,14 @@ body {
   display: flex;
   align-items: center;
   gap: 10px;
+  i {
+    color: var(--primary);
+  }
 }
-
-.view-text-btn {
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: var(--primary);
-  padding: 8px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  font-size: 0.9rem;
+.playlist-item.active .surah-actions i {
+  opacity: 1;
+  color: var(--white);
 }
-
-.view-text-btn:hover {
-  background: rgba(255, 255, 255, 0.2);
-  transform: translateY(-2px);
-}
-
-.view-text-btn i {
-  font-size: 0.9rem;
-}
-
 /* Modal Styles */
 .modal {
   display: none;
@@ -663,7 +650,7 @@ body {
 
 .modal-header h2 {
   color: var(--primary);
-  font-size: var(--font-3xl);
+
   margin: 0;
 }
 
@@ -795,8 +782,6 @@ body {
 }
 
 #mushaf-text {
-  max-width: 90%;
-  margin: 0 auto;
   font-family: "Amiri", serif;
   line-height: 2.2;
   font-size: 1.4rem;
@@ -844,8 +829,8 @@ body {
 
 .mushaf-verse-number {
   display: inline-flex;
-  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-  color: white;
+  border: 8px double var(--primary);
+
   width: 4rem;
   height: 4rem;
   border-radius: 50%;
@@ -857,6 +842,7 @@ body {
   align-items: center;
   font-size: 2rem;
   transition: all 0.3s ease;
+  vertical-align: middle;
 }
 
 .mushaf-verse-number:hover {

@@ -163,7 +163,7 @@ class QuranPlayer {
 
                 // Sort playlist by chapter number
                 this.playlist.sort((a, b) => a.number - b.number);
-                
+
                 // Update filtered playlist and re-render if we have significant progress
                 if (this.playlist.length % 5 === 0 || this.playlist.length >= 114) {
                     this.filteredPlaylist = [...this.playlist];
@@ -538,13 +538,13 @@ class QuranPlayer {
             }
 
             listItem.innerHTML = `
+            <div class="surah-info">
                 <div class="surah-number">${this.toArabicNumerals(track.number)}</div>
-                <div class="surah-info">
-                    <div class="surah-name">${track.nameArabic}</div>
-                </div>
-                <div class="surah-actions">
-                    <button class="view-text-btn" onclick="player.showSurahText(${track.number})" title="عرض النص">
-                        <i class="fas fa-book-open"></i>
+                <div class="surah-name">${track.nameArabic}</div>
+            </div>
+            <div class="surah-actions">
+                <button class="view-text-btn" onclick="player.showSurahText(${track.number})" title="عرض النص">
+                    <i class="fas fa-book-open"></i>
                     </button>
                     <div class="play-indicator">
                         <i class="fas fa-volume-up"></i>
