@@ -1,0 +1,145 @@
+/* Base and layout */
+html {
+  font-size: var(--font-base);
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  min-height: 100vh;
+  color: var(--dark);
+  direction: rtl;
+  font-size: var(--font-base);
+  * {
+    transition: all 0.3s ease;
+  }
+  *::-webkit-scrollbar {
+    width: 8px;
+  }
+  *::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: var(--radius-sm);
+  }
+  *::-webkit-scrollbar-thumb {
+    background: var(--primary);
+    border-radius: var(--radius-sm);
+  }
+  *::-webkit-scrollbar-thumb:hover {
+    background: #5a6fd8;
+  }
+}
+
+h2 {
+  font-size: var(--font-3xl);
+}
+button {
+  background: transparent;
+  border: 0;
+  font-size: var(--font-base);
+}
+ul {
+  margin: 0;
+  padding: 0;
+}
+i {
+  font-size: var(--font-base);
+}
+.app-container {
+  max-width: 98%;
+  margin: 0 auto;
+  padding: var(--space-lg);
+}
+
+.app-header {
+  margin-bottom: var(--space-xl);
+  h1 {
+    color: var(--white);
+    font-size: var(--font-4xl);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  }
+
+  button {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-weight: bold;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateY(-2px);
+    }
+  }
+}
+.main-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-xl);
+  align-items: start;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .main-content {
+    grid-template-columns: 1fr;
+    gap: var(--space-md);
+  }
+  .app-container {
+    padding: var(--space-md);
+  }
+  .app-header {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    gap: var(--space-lg);
+  }
+  .card {
+    padding: var(--space-md);
+  }
+  .playlist {
+    &__header {
+      flex-direction: column;
+      gap: var(--space-md);
+      align-items: stretch;
+    }
+    &__controls {
+      justify-content: center;
+    }
+  }
+}
+
+/* States */
+.loading {
+  opacity: 0.6;
+  pointer-events: none;
+}
+.error {
+  color: #e74c3c;
+  text-align: center;
+  padding: var(--space-lg);
+  background: #fdf2f2;
+  border-radius: var(--radius-md);
+  margin: var(--space-sm) 0;
+}
+/* Loading indicator */
+#loading-indicator {
+  position: fixed;
+  top: 40px;
+  right: 40px;
+  left: 40px;
+  text-align: center;
+  font-weight: bold;
+  background: rgba(102, 126, 234, 0.9);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 25px;
+  z-index: 1000;
+  display: none;
+}

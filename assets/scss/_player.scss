@@ -1,0 +1,164 @@
+/* Player (BEM) - nested */
+.player {
+  &__track {
+    margin-bottom: var(--space-xl);
+    h2 {
+      color: var(--dark);
+      margin-bottom: var(--space-sm);
+    }
+    p {
+      color: var(--gray);
+      font-size: var(--font-lg);
+    }
+  }
+
+  &__controls,
+  &__buttons {
+    gap: var(--space-md);
+  }
+  &__time {
+    margin-bottom: var(--space-sm);
+    color: var(--gray);
+  }
+
+  &__progress {
+    height: 8px;
+    background: var(--light-gray);
+    border-radius: var(--radius-sm);
+    transition: background-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  &__progress-fill {
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    border-radius: var(--radius-sm);
+    width: 0%;
+    transition: width 0.1s ease;
+  }
+  &__progress-handle {
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    background: var(--white);
+    border: 3px solid var(--primary);
+    right: 0%;
+    transition: right 0.1s ease;
+  }
+
+  // Subtle hover feedback on progress bar
+  &__progress:hover {
+    background: #e6eaee;
+    box-shadow: inset 0 0 0 2px rgba(102, 126, 234, 0.15);
+  }
+  &__progress:hover #progress-handle {
+    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.15);
+  }
+
+  &__button {
+    width: 2.5rem;
+    height: 2.5rem;
+    color: var(--white);
+    font-size: var(--font-2xl);
+  }
+  &__button--lg {
+    width: 3rem;
+    height: 3rem;
+    font-size: var(--font-4xl);
+  }
+  &__button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  }
+  &__button:active {
+    transform: scale(0.95);
+  }
+  &__button.active {
+    background: var(--white);
+    color: var(--primary);
+  }
+
+  &__additional {
+    align-items: center;
+    gap: var(--space-md);
+  }
+  &__volume-control {
+    align-items: center;
+    gap: var(--space-sm);
+    max-width: 150px;
+  }
+  &__reciter-control {
+    align-items: center;
+    gap: var(--space-sm);
+    max-width: 200px;
+  }
+  &__reciter-control i,
+  &__volume-control i {
+    color: var(--primary);
+  }
+}
+
+/* Progress container wrapper */
+.progress-container {
+  width: 100%;
+}
+
+/* ID-based styles to match HTML structure */
+#progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  border-top-right-radius: var(--radius-sm);
+  border-bottom-right-radius: var(--radius-sm);
+  width: 0%;
+  transition: width 0.1s ease;
+  transform: translateX(-4px);
+}
+
+#progress-handle {
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  background: var(--white);
+  border: 3px solid var(--primary);
+  right: 0%;
+  transition: right 0.1s ease;
+  border-radius: 50%;
+}
+
+#reciter-select {
+  padding: var(--space-xs);
+  border: 2px solid var(--light-gray);
+  border-radius: var(--radius-sm);
+  background: var(--white);
+  color: var(--dark);
+  font-size: var(--font-base);
+}
+#reciter-select:focus {
+  border-color: var(--primary);
+}
+
+#volume-slider {
+  height: 6px;
+  background: var(--light-gray);
+  border-radius: var(--radius-sm);
+}
+#volume-slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  background: var(--primary);
+  border-radius: 50%;
+}
+
+/* Responsive player bits */
+@media (max-width: 768px) {
+  .player {
+    &__additional {
+      flex-direction: column;
+      gap: var(--space-sm);
+    }
+    &__reciter-control,
+    &__volume-control {
+      max-width: 100%;
+    }
+  }
+}

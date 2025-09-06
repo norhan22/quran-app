@@ -1,0 +1,61 @@
+// SCSS variables and CSS custom properties bridge
+
+// Colors (Senior-friendly light comfort palette)
+$color-primary: #2b6cb0; // deep accessible blue
+$color-secondary: #3182ce; // supportive accent blue
+$color-white: #ffffff;
+$color-dark: #1f2937; // near-black for readable text
+$color-gray: #4b5563; // muted text
+$color-light-gray: #e5e7eb; // lines/borders
+
+// Effects
+$bg-glass: rgba(255, 255, 255, 0.98); // slightly more opaque for readability
+$shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+
+// Typography
+$font-base: 16px; // bump default size
+$font-lg: 1.25rem;
+$font-xl: 1.375rem;
+$font-2xl: 1.625rem;
+$font-3xl: 2rem;
+$font-4xl: 2.5rem;
+
+// Spacing
+$space-xs: 8px;
+$space-sm: 16px;
+$space-md: 24px;
+$space-lg: 32px;
+$space-xl: 40px;
+
+// Radius
+$radius-sm: 8px;
+$radius-md: 16px;
+$radius-lg: 20px;
+$radius-xl: 32px;
+
+// Expose as CSS custom properties for runtime theming
+:root {
+  --primary: #{$color-primary};
+  --secondary: #{$color-secondary};
+  --white: #{$color-white};
+  --dark: #{$color-dark};
+  --gray: #{$color-gray};
+  --light-gray: #{$color-light-gray};
+  --bg-glass: #{$bg-glass};
+  --shadow: #{$shadow};
+  --font-base: #{$font-base};
+  --font-lg: #{$font-lg};
+  --font-xl: #{$font-xl};
+  --font-2xl: #{$font-2xl};
+  --font-3xl: #{$font-3xl};
+  --font-4xl: #{$font-4xl};
+  --space-xs: #{$space-xs};
+  --space-sm: #{$space-sm};
+  --space-md: #{$space-md};
+  --space-xl: #{$space-xl};
+  --space-lg: #{$space-lg};
+  --radius-sm: #{$radius-sm};
+  --radius-md: #{$radius-md};
+  --radius-lg: #{$radius-lg};
+  --radius-xl: #{$radius-xl};
+}

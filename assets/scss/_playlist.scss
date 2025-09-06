@@ -1,0 +1,113 @@
+/* Playlist (BEM) - nested */
+.playlist {
+  display: flex;
+  flex-direction: column;
+
+  &__header {
+    align-items: center;
+    margin-bottom: var(--space-lg);
+  }
+  &__controls {
+    gap: var(--space-sm);
+  }
+
+  &__search {
+    margin-bottom: var(--space-lg);
+  }
+  &__search-input {
+    padding: var(--space-md) 40px var(--space-md) var(--space-md);
+    border: 2px solid var(--light-gray);
+    border-radius: var(--radius-xl);
+    font-size: var(--font-base);
+    transition: border-color 0.3s ease;
+    width: -webkit-fill-available;
+
+    &:focus {
+      border-color: var(--primary);
+    }
+  }
+  &__search-icon {
+    left: var(--space-md);
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--gray);
+  }
+
+  &__container {
+    overflow-y: auto;
+  }
+
+  &__items {
+    list-style: none;
+    max-height: 80vh;
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    padding: var(--space-md);
+    margin-bottom: var(--space-sm);
+    background: #f8f9fa;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+
+    border: 2px solid transparent;
+
+    &:not(.playlist__item--active):hover {
+      background: #e9ecef;
+    }
+
+    &--active {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: var(--white);
+      border-color: var(--primary);
+
+      .playlist__item-actions i {
+        opacity: 1;
+        color: var(--white);
+      }
+    }
+
+    &-number {
+      width: 40px;
+      height: 40px;
+      background: var(--primary);
+      color: var(--white);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      margin-left: var(--space-md);
+      flex-shrink: 0;
+    }
+    &-info {
+      flex: 1;
+      display: flex;
+      align-items: center;
+    }
+    &-name {
+      font-size: var(--font-lg);
+      font-weight: bold;
+      margin-bottom: var(--space-xs);
+    }
+
+    &-play-indicator {
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      transform: rotate(180deg);
+    }
+    &--playing .playlist__item-play-indicator {
+      opacity: 1;
+    }
+  }
+
+  &__item-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    i {
+      color: var(--primary);
+    }
+  }
+}

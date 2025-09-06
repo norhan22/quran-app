@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>اذاعة القرآن الكريم</title>
-    <link rel="stylesheet" href="./assets/styles.css" />
+    <link rel="stylesheet" href="./assets/styles.min.css" />
     <link
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
       rel="stylesheet"
@@ -16,38 +16,34 @@
       <header class="app-header text-center flex flex-between">
         <h1><i class="fas fa-quran"></i> اذاعة القرآن الكريم</h1>
         <div class="header-controls flex">
-          <button id="show-mushaf-btn" class="font-btn" title="عرض المصحف">
+          <button id="show-mushaf-btn" title="عرض المصحف">
             <i class="fas fa-book-open"></i> عرض المصحف
           </button>
           <div class="font-zoom-controls flex">
-            <button id="font-decrease" class="font-btn" title="تصغير الخط">
-              A-
-            </button>
-            <button id="font-increase" class="font-btn" title="تكبير الخط">
-              A+
-            </button>
+            <button id="font-decrease" title="تصغير الخط">A-</button>
+            <button id="font-increase" title="تكبير الخط">A+</button>
           </div>
         </div>
       </header>
 
       <main class="main-content">
         <!-- Audio Player Section -->
-        <div class="player-section">
-          <div class="current-track-info text-center">
+        <div class="player card">
+          <div class="player__track text-center">
             <h2 id="current-surah-name">اختر سورة للتشغيل</h2>
             <p id="current-surah-info">--</p>
           </div>
 
-          <div class="audio-controls flex flex-col">
+          <div class="player__controls flex flex-col">
             <audio id="audio-player" preload="metadata"></audio>
 
             <div class="progress-container w-full">
-              <div class="time-display flex flex-between">
+              <div class="player__time flex flex-between">
                 <span id="current-time">00:00</span>
                 <span id="duration">00:00</span>
               </div>
               <div
-                class="progress-bar relative cursor-pointer w-full"
+                class="player__progress relative cursor-pointer w-full"
                 dir="rtl"
               >
                 <div id="progress-fill" class="h-full"></div>
@@ -58,9 +54,9 @@
               </div>
             </div>
 
-            <div class="control-buttons flex flex-center">
+            <div class="player__buttons flex flex-center">
               <button
-                class="control-btn flex flex-center no-border rounded-full gradient-bg transition cursor-pointer"
+                class="player__button flex flex-center no-border rounded-full gradient-bg transition cursor-pointer"
                 id="show-surah-text-btn"
                 title="عرض النص"
               >
@@ -68,36 +64,36 @@
               </button>
               <button
                 id="prev-btn"
-                class="control-btn flex flex-center no-border rounded-full gradient-bg transition cursor-pointer"
+                class="player__button flex flex-center no-border rounded-full gradient-bg transition cursor-pointer"
                 aria-label="السورة السابقة"
               >
                 <i class="fas fa-step-backward"></i>
               </button>
               <button
                 id="play-pause-btn"
-                class="control-btn play-btn flex flex-center no-border rounded-full gradient-bg transition cursor-pointer"
+                class="player__button player__button--lg flex flex-center no-border rounded-full gradient-bg transition cursor-pointer"
                 aria-label="تشغيل/إيقاف"
               >
                 <i class="fas fa-play"></i>
               </button>
               <button
                 id="next-btn"
-                class="control-btn flex flex-center no-border rounded-full gradient-bg transition cursor-pointer"
+                class="player__button flex flex-center no-border rounded-full gradient-bg transition cursor-pointer"
                 aria-label="السورة التالية"
               >
                 <i class="fas fa-step-forward"></i>
               </button>
               <button
                 id="repeat-btn"
-                class="control-btn flex flex-center no-border rounded-full gradient-bg transition cursor-pointer"
+                class="player__button flex flex-center no-border rounded-full gradient-bg transition cursor-pointer"
                 aria-label="إعادة التشغيل"
               >
                 <i class="fas fa-redo"></i>
               </button>
             </div>
 
-            <div class="additional-controls flex flex-between w-full">
-              <div class="reciter-control flex">
+            <div class="player__additional flex flex-between w-full">
+              <div class="player__reciter-control flex">
                 <i class="fas fa-microphone"></i>
                 <select
                   id="reciter-select"
@@ -106,7 +102,7 @@
                   <!-- Options will be populated dynamically from API -->
                 </select>
               </div>
-              <div class="volume-control flex">
+              <div class="player__volume-control flex">
                 <i class="fas fa-volume-up"></i>
                 <input
                   type="range"
@@ -122,56 +118,56 @@
         </div>
 
         <!-- Combined Playlist and Reader Section -->
-        <div class="playlist-section">
-          <div class="playlist-header flex flex-between">
+        <div class="playlist card">
+          <div class="playlist__header flex flex-between">
             <h3>فهرس السور</h3>
-            <div class="playlist-controls flex">
+            <div class="playlist__controls flex">
               <button
                 id="view-toggle"
-                class="playlist-btn no-border transition cursor-pointer font-bold"
+                class="btn btn--secondary no-border transition cursor-pointer font-bold"
               >
                 <i class="fas fa-book-open"></i> عرض النص
               </button>
               <button
                 id="play-all-btn"
-                class="playlist-btn no-border transition cursor-pointer font-bold"
+                class="btn btn--secondary no-border transition cursor-pointer font-bold"
               >
                 <i class="fas fa-play-circle"></i> تشغيل الكل
               </button>
 
               <button
                 id="autoplay-toggle"
-                class="playlist-btn active no-border transition cursor-pointer font-bold"
+                class="btn btn--primary active no-border transition cursor-pointer font-bold"
               >
                 <i class="fas fa-forward"></i> التشغيل التلقائي
               </button>
             </div>
           </div>
 
-          <div class="search-container relative">
+          <div class="playlist__search relative">
             <input
               type="text"
               id="search-input"
-              class="w-full no-outline transition"
+              class="playlist__search-input"
               placeholder="البحث في السور..."
             />
-            <i class="fas fa-search absolute"></i>
+            <i class="fas fa-search playlist__search-icon absolute"></i>
           </div>
 
-          <div class="playlist-container flex-1">
-            <ul id="playlist" class="playlist-items"></ul>
+          <div class="playlist__container flex-1">
+            <ul id="playlist" class="playlist__items"></ul>
           </div>
         </div>
       </main>
 
       <!-- Surah Text Modal -->
       <div id="surah-modal" class="modal">
-        <div class="modal-content">
-          <div class="modal-header">
+        <div class="modal__content">
+          <div class="modal__header">
             <h2 id="modal-surah-title">سورة</h2>
-            <button id="close-modal" class="close-modal">&times;</button>
+            <button id="close-modal" class="modal__close">&times;</button>
           </div>
-          <div class="modal-body">
+          <div class="modal__body">
             <div id="surah-text-content">
               <div class="loading">جاري تحميل النص...</div>
             </div>

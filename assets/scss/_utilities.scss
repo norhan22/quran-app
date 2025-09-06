@@ -1,0 +1,106 @@
+// Lightweight utilities (OOCSS)
+
+.flex {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.flex-col {
+  flex-direction: column;
+}
+.flex-center {
+  justify-content: center;
+}
+.flex-between {
+  justify-content: space-between;
+}
+.flex-1 {
+  flex: 1;
+}
+.text-center {
+  text-align: center;
+}
+.cursor-pointer {
+  cursor: pointer;
+}
+.transition {
+}
+.rounded-full {
+  border-radius: 50%;
+}
+.relative {
+  position: relative;
+}
+.absolute {
+  position: absolute;
+}
+.w-full {
+  width: 100%;
+}
+.h-full {
+  height: 100%;
+}
+.font-bold {
+  font-weight: bold;
+}
+.gradient-bg {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+}
+
+// OOCSS objects
+.card {
+  background: var(--bg-glass);
+  border-radius: var(--radius-xl);
+  padding: var(--space-xl);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(10px);
+}
+
+.btn,
+button {
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+
+  font-weight: bold;
+}
+.btn--primary {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: var(--white);
+  padding: var(--space-xs) var(--space-md);
+  border-radius: var(--radius-lg);
+}
+.btn--secondary {
+  background: var(--light-gray);
+  color: var(--dark);
+  padding: var(--space-xs) var(--space-md);
+  border-radius: var(--radius-lg);
+}
+.btn--control {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-2xl);
+  color: var(--white);
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+}
+.btn--control:hover {
+  transform: scale(1.1);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+.btn--control:active {
+  transform: scale(0.95);
+}
+
+/* Accessible focus styles */
+.btn:focus-visible,
+.player__button:focus-visible,
+select:focus-visible,
+input:focus-visible {
+  outline: 3px solid rgba(43, 108, 176, 0.45); /* primary with alpha */
+  outline-offset: 3px;
+}

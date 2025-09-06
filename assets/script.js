@@ -1,3 +1,12 @@
+// Small utility: debounce to prevent excessive saves/UI thrash
+function debounce(fn, wait) {
+    let t;
+    return function (...args) {
+        clearTimeout(t);
+        t = setTimeout(() => fn.apply(this, args), wait);
+    };
+}
+
 class QuranPlayer {
     constructor() {
         this.audioPlayer = document.getElementById('audio-player');
@@ -17,10 +26,8 @@ class QuranPlayer {
         this.setupEventListeners();
         this.loadPlaylist();
 
-        // Add periodic state saving
-        setInterval(() => {
-            this.savePlayerState();
-        }, 5000);
+        // Debounced saver for frequent updates
+        this.savePlayerStateDebounced = debounce(this.savePlayerState.bind(this), 800);
     }
 
     initializeElements() {
@@ -40,7 +47,7 @@ class QuranPlayer {
         this.showMushafBtn = document.getElementById('show-mushaf-btn');
         this.fontIncreaseBtn = document.getElementById('font-increase');
         this.fontDecreaseBtn = document.getElementById('font-decrease');
-        this.progressBar = document.querySelector('.progress-bar');
+        this.progressBar = document.querySelector('.player__progress');
         this.progressFill = document.getElementById('progress-fill');
         this.progressHandle = document.getElementById('progress-handle');
         this.currentTime = document.getElementById('current-time');
@@ -88,7 +95,7 @@ class QuranPlayer {
 
     async loadPlaylist() {
         try {
-            console.log('Loading all chapter data from Quran API...');
+            // Load all chapter data from Quran API
             this.playlist = [];
 
             // Load all chapter data at once
@@ -109,23 +116,22 @@ class QuranPlayer {
         // Load priority chapters first for immediate use
         const priorityChapters = 10;
 
-        console.log('Loading priority chapters...');
+        // Load priority chapters first
         for (const chapterNum of Array(priorityChapters).keys()) {
             await this.loadSingleChapter(chapterNum + 1);
         }
 
         // Load remaining chapters in background
-        console.log('Loading remaining chapters in background...');
+
         setTimeout(async () => {
             for (let i = priorityChapters + 1; i <= 114; i++) {
                 await this.loadSingleChapter(i);
                 // Re-render playlist after each chapter loads to show progress
-                if (i % 10 === 0) { // Update every 10 chapters
+                if (i % 12 === 0) { // Update periodically
                     this.filteredPlaylist = [...this.playlist];
                     this.renderPlaylist();
                 }
             }
-            console.log('All chapters loaded!');
             // Final render to ensure all chapters are displayed
             this.filteredPlaylist = [...this.playlist];
             this.renderPlaylist();
@@ -204,14 +210,16 @@ class QuranPlayer {
 
         let content = '';
         chapter.ayahs.forEach((ayah, index) => {
-            content += `<div class="verse">
-                <span class="verse-text">${ayah}</span>
-                <span class="verse-number">${this.toArabicNumerals(index + 1)}</span>
+            content += `<div class="modal__verse">
+                <span class="modal__verse-text">${ayah}</span>
+                <span class="modal__verse-number">${this.toArabicNumerals(index + 1)}</span>
             </div>`;
         });
 
         this.modalContent.innerHTML = content;
+        // Show modal
         this.surahModal.style.display = 'flex';
+        this.surahModal.classList.add('modal--visible');
     }
 
 
@@ -282,14 +290,14 @@ class QuranPlayer {
 
     increaseFontSize() {
         this.fontSize = Math.min(this.fontSize + 2, 100);
-        document.documentElement.style.fontSize = this.fontSize + 'px';
-        this.savePlayerState();
+        document.documentElement.style.setProperty('--font-base', this.fontSize + 'px');
+        this.savePlayerStateDebounced();
     }
 
     decreaseFontSize() {
         this.fontSize = Math.max(this.fontSize - 2, 12);
-        document.documentElement.style.fontSize = this.fontSize + 'px';
-        this.savePlayerState();
+        document.documentElement.style.setProperty('--font-base', this.fontSize + 'px');
+        this.savePlayerStateDebounced();
     }
 
     setCurrentAyah(chapterNumber, ayahIndex) {
@@ -299,7 +307,7 @@ class QuranPlayer {
             this.currentTrackIndex = chapterIndex;
             this.currentAyahIndex = ayahIndex;
 
-            console.log(`Set current position: Chapter ${chapterNumber}, Ayah ${this.toArabicNumerals(ayahIndex + 1)}`);
+            // Update current position
 
             // Remove previous highlights immediately
             document.querySelectorAll('.current-ayah').forEach(el => {
@@ -313,7 +321,7 @@ class QuranPlayer {
             }
 
             // Save state
-            this.savePlayerState();
+            this.savePlayerStateDebounced();
         }
     }
 
@@ -352,7 +360,6 @@ class QuranPlayer {
                 fontSize: this.fontSize
             };
             localStorage.setItem('quranPlayerState', JSON.stringify(state));
-            // console.log('Player state saved:', state);
         } catch (error) {
             console.error('Error saving player state:', error);
         }
@@ -361,11 +368,9 @@ class QuranPlayer {
     loadPlayerState() {
         try {
             const savedState = localStorage.getItem('quranPlayerState');
-            console.log('Loading saved state:', savedState);
 
             if (savedState) {
                 const state = JSON.parse(savedState);
-                console.log('Parsed state:', state);
 
                 // Restore player state immediately
                 this.currentTrackIndex = state.currentTrackIndex || 0;
@@ -375,16 +380,8 @@ class QuranPlayer {
                 this.currentAyahIndex = state.currentAyahIndex || 0;
                 this.fontSize = state.fontSize || 16;
 
-                // Apply saved font size
-                document.documentElement.style.fontSize = this.fontSize + 'px';
-
-                console.log('Restored values:', {
-                    currentTrackIndex: this.currentTrackIndex,
-                    currentReciter: this.currentReciter,
-                    isAutoplay: this.isAutoplay,
-                    isRepeatMode: this.isRepeatMode,
-                    currentAyahIndex: this.currentAyahIndex
-                });
+                // Apply saved font size via CSS variable
+                document.documentElement.style.setProperty('--font-base', this.fontSize + 'px');
 
                 // Update UI elements immediately
                 if (this.volumeSlider && state.volume) {
@@ -406,7 +403,6 @@ class QuranPlayer {
 
                 // Load the saved track if playlist is ready
                 if (this.playlist.length > 0) {
-                    console.log('Loading track at index:', this.currentTrackIndex);
                     this.loadCurrentTrack();
                     this.updatePlaylistUI();
 
@@ -416,11 +412,9 @@ class QuranPlayer {
                             this.audioPlayer.currentTime = state.currentTime;
                         }, 1000);
                     }
-                } else {
-                    console.log('Playlist not ready yet, state will be applied when playlist loads');
                 }
             } else {
-                console.log('No saved state found');
+                // No saved state
             }
         } catch (error) {
             console.error('Error loading player state:', error);
@@ -470,7 +464,7 @@ class QuranPlayer {
         // Volume control
         this.volumeSlider.addEventListener('input', (e) => {
             this.setVolume(e.target.value);
-            this.savePlayerState();
+            this.savePlayerStateDebounced();
         });
 
         // Progress bar
@@ -479,19 +473,39 @@ class QuranPlayer {
         // Search functionality
         this.searchInput.addEventListener('input', (e) => this.filterPlaylist(e.target.value));
 
+        // Playlist click delegation
+        if (this.playlistContainer) {
+            this.playlistContainer.addEventListener('click', (e) => {
+                const viewBtn = e.target.closest('.playlist__view-text-btn');
+                if (viewBtn) {
+                    const chapter = parseInt(viewBtn.getAttribute('data-chapter'), 10);
+                    if (!isNaN(chapter)) this.showSurahText(chapter);
+                    return;
+                }
+
+                const item = e.target.closest('.playlist__item');
+                if (item && item.dataset.index !== undefined) {
+                    this.currentTrackIndex = parseInt(item.dataset.index, 10);
+                    this.loadCurrentTrack();
+                    this.play();
+                }
+            });
+        }
+
         // Reciter selection
         if (this.reciterSelect) {
             this.reciterSelect.addEventListener('change', async (e) => {
                 this.currentReciter = e.target.value;
-                console.log(`Reciter changed to: ${this.currentReciter}`);
                 await this.loadCurrentTrack();
-                this.savePlayerState();
+                this.savePlayerStateDebounced();
             });
         }
 
         // Modal events
         if (this.closeModal) {
             this.closeModal.addEventListener('click', () => {
+                // Backward-compatible hide: remove BEM state class and inline style
+                this.surahModal.classList.remove('modal--visible');
                 this.surahModal.style.display = 'none';
             });
         }
@@ -499,6 +513,7 @@ class QuranPlayer {
         if (this.surahModal) {
             this.surahModal.addEventListener('click', (e) => {
                 if (e.target === this.surahModal) {
+                    this.surahModal.classList.remove('modal--visible');
                     this.surahModal.style.display = 'none';
                 }
             });
@@ -527,41 +542,30 @@ class QuranPlayer {
 
         this.filteredPlaylist.forEach((track, index) => {
             const listItem = document.createElement('li');
-            listItem.className = 'playlist-item';
+            listItem.className = 'playlist__item';
             listItem.dataset.index = this.playlist.indexOf(track);
 
             if (this.playlist.indexOf(track) === this.currentTrackIndex) {
-                listItem.classList.add('active');
+                listItem.classList.add('playlist__item--active');
                 if (this.isPlaying) {
-                    listItem.classList.add('playing');
+                    listItem.classList.add('playlist__item--playing');
                 }
             }
 
             listItem.innerHTML = `
-            <div class="surah-info">
-                <div class="surah-number">${this.toArabicNumerals(track.number)}</div>
-                <div class="surah-name">${track.nameArabic}</div>
+            <div class="playlist__item-info">
+                <div class="playlist__item-number">${this.toArabicNumerals(track.number)}</div>
+                <div class="playlist__item-name">${track.nameArabic}</div>
             </div>
-            <div class="surah-actions">
-                <button class="view-text-btn" onclick="player.showSurahText(${track.number})" title="عرض النص">
+            <div class="playlist__item-actions">
+                <button class="playlist__view-text-btn" data-chapter="${track.number}" title="عرض النص">
                     <i class="fas fa-book-open"></i>
                     </button>
-                    <div class="play-indicator">
+                    <div class="playlist__item-play-indicator">
                         <i class="fas fa-volume-up"></i>
                     </div>
                 </div>
             `;
-
-            listItem.addEventListener('click', (e) => {
-                // Prevent click if clicking on the view text button
-                if (e.target.closest('.view-text-btn')) {
-                    return;
-                }
-
-                this.currentTrackIndex = parseInt(listItem.dataset.index);
-                this.loadCurrentTrack();
-                this.play();
-            });
 
             this.playlistContainer.appendChild(listItem);
         });
@@ -603,15 +607,15 @@ class QuranPlayer {
     }
 
     updatePlaylistUI() {
-        const playlistItems = document.querySelectorAll('.playlist-item');
+        const playlistItems = document.querySelectorAll('.playlist__item');
         playlistItems.forEach((item, index) => {
             const trackIndex = parseInt(item.dataset.index);
-            item.classList.remove('active', 'playing');
+            item.classList.remove('playlist__item--active', 'playlist__item--playing');
 
             if (trackIndex === this.currentTrackIndex) {
-                item.classList.add('active');
+                item.classList.add('playlist__item--active');
                 if (this.isPlaying) {
-                    item.classList.add('playing');
+                    item.classList.add('playlist__item--playing');
                 }
             }
         });
@@ -651,7 +655,7 @@ class QuranPlayer {
     nextTrack() {
         this.currentTrackIndex = (this.currentTrackIndex + 1) % this.playlist.length;
         this.loadCurrentTrack();
-        this.savePlayerState();
+        this.savePlayerStateDebounced();
         if (this.isPlaying) {
             this.play();
         }
@@ -662,7 +666,7 @@ class QuranPlayer {
             ? this.playlist.length - 1
             : this.currentTrackIndex - 1;
         this.loadCurrentTrack();
-        this.savePlayerState();
+        this.savePlayerStateDebounced();
         if (this.isPlaying) {
             this.play();
         }
@@ -689,13 +693,13 @@ class QuranPlayer {
         this.isRepeatMode = !this.isRepeatMode;
         this.repeatBtn.classList.toggle('active', this.isRepeatMode);
         this.audioPlayer.currentTime = 0;
-        this.savePlayerState();
+        this.savePlayerStateDebounced();
     }
 
     toggleAutoplay() {
         this.isAutoplay = !this.isAutoplay;
         this.autoplayToggle.classList.toggle('active', this.isAutoplay);
-        this.savePlayerState();
+        this.savePlayerStateDebounced();
     }
 
     playAll() {
