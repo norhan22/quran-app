@@ -10,7 +10,6 @@ body {
   min-height: 100vh;
   color: var(--dark);
   direction: rtl;
-  font-size: var(--font-base);
   * {
     transition: all 0.3s ease;
   }
@@ -31,7 +30,8 @@ body {
 }
 
 h2 {
-  font-size: var(--font-3xl);
+  /* Scales with viewport, constrained by tokens */
+  font-size: clamp(1.5rem, 3.5vw, var(--font-3xl));
 }
 button {
   background: transparent;
@@ -43,7 +43,7 @@ ul {
   padding: 0;
 }
 i {
-  font-size: var(--font-base);
+  font-size: 1em;
 }
 .app-container {
   max-width: 98%;
@@ -55,7 +55,7 @@ i {
   margin-bottom: var(--space-xl);
   h1 {
     color: var(--white);
-    font-size: var(--font-4xl);
+    font-size: clamp(2rem, 5vw, var(--font-4xl));
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
   }
 
@@ -76,12 +76,12 @@ i {
 .main-content {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: var(--space-xl);
+  gap: clamp(var(--space-xl), var(--space-xl), var(--space-xl));
   align-items: start;
 }
 
 /* Responsive */
-@media (max-width: 1024px) {
+@media (max-width: 1025px) {
   .main-content {
     grid-template-columns: 1fr;
     gap: var(--space-md);
@@ -94,6 +94,9 @@ i {
     justify-content: center;
     align-items: center;
   }
+  .header-controls {
+    justify-content: center;
+  }
 }
 
 @media (max-width: 768px) {
@@ -101,7 +104,7 @@ i {
     gap: var(--space-lg);
   }
   .card {
-    padding: var(--space-md);
+    padding: var(--space-lg) var(--space-md);
   }
   .playlist {
     &__header {

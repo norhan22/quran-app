@@ -28,20 +28,23 @@
     transition: background-color 0.2s ease, box-shadow 0.2s ease;
   }
   &__progress-fill {
+    height: 100%;
     background: linear-gradient(90deg, var(--primary), var(--secondary));
-    border-radius: var(--radius-sm);
+    border-top-right-radius: var(--radius-sm);
+    border-bottom-right-radius: var(--radius-sm);
     width: 0%;
     transition: width 0.1s ease;
   }
   &__progress-handle {
     top: 50%;
-    transform: translateY(-50%);
+    transform: translate(1px, -50%);
     width: 16px;
     height: 16px;
     background: var(--white);
     border: 3px solid var(--primary);
     right: 0%;
     transition: right 0.1s ease;
+    border-radius: 50%;
   }
 
   // Subtle hover feedback on progress bar
@@ -53,16 +56,54 @@
     box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.15);
   }
 
+  /* Buttons container - Flexbox */
+  &__buttons {
+    /* Ensure flex layout wins over utilities if needed */
+
+    gap: var(--space-md);
+    justify-content: center;
+    align-items: center;
+  }
+
+  @media (max-width: 768px) {
+    &__buttons {
+      justify-content: center;
+      align-items: center;
+      gap: var(--space-sm); /* tighter gap to avoid wrapping */
+      flex-wrap: wrap; /* allow two rows */
+      row-gap: var(--space-sm);
+      width: 80%;
+    }
+    /* First row: prev | play | next */
+    #prev-btn,
+    #play-pause-btn,
+    #next-btn {
+      order: 1;
+    }
+    /* Second row: text | repeat */
+    #show-surah-text-btn,
+    #repeat-btn {
+      order: 2;
+    }
+
+    /* Slightly reduce the big play button to help fit */
+    &__button--lg {
+      width: 2.75rem;
+      height: 2.75rem;
+      font-size: var(--font-2xl);
+    }
+  }
+
   &__button {
     width: 2.5rem;
     height: 2.5rem;
     color: var(--white);
-    font-size: var(--font-2xl);
+    font-size: var(--font-xl);
   }
   &__button--lg {
     width: 3rem;
     height: 3rem;
-    font-size: var(--font-4xl);
+    font-size: var(--font-3xl);
   }
   &__button:hover {
     transform: scale(1.1);
@@ -99,29 +140,6 @@
 /* Progress container wrapper */
 .progress-container {
   width: 100%;
-}
-
-/* ID-based styles to match HTML structure */
-#progress-fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--primary), var(--secondary));
-  border-top-right-radius: var(--radius-sm);
-  border-bottom-right-radius: var(--radius-sm);
-  width: 0%;
-  transition: width 0.1s ease;
-  transform: translateX(-4px);
-}
-
-#progress-handle {
-  top: 50%;
-  transform: translateY(-50%);
-  width: 16px;
-  height: 16px;
-  background: var(--white);
-  border: 3px solid var(--primary);
-  right: 0%;
-  transition: right 0.1s ease;
-  border-radius: 50%;
 }
 
 #reciter-select {

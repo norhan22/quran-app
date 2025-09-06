@@ -55,6 +55,10 @@
   padding: var(--space-xl);
   box-shadow: var(--shadow);
   backdrop-filter: blur(10px);
+  h3,
+  h2 {
+    margin-top: 0;
+  }
 }
 
 .btn,

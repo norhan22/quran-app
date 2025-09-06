@@ -46,10 +46,13 @@
                 class="player__progress relative cursor-pointer w-full"
                 dir="rtl"
               >
-                <div id="progress-fill" class="h-full"></div>
+                <div
+                  id="progress-fill"
+                  class="h-full player__progress-fill"
+                ></div>
                 <div
                   id="progress-handle"
-                  class="absolute rounded-full cursor-pointer"
+                  class="absolute rounded-full cursor-pointer player__progress-handle"
                 ></div>
               </div>
             </div>
@@ -120,7 +123,6 @@
         <!-- Combined Playlist and Reader Section -->
         <div class="playlist card">
           <div class="playlist__header flex flex-between">
-            <h3>فهرس السور</h3>
             <div class="playlist__controls flex">
               <button
                 id="view-toggle"

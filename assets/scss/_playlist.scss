@@ -2,17 +2,13 @@
 .playlist {
   display: flex;
   flex-direction: column;
+  gap: var(--space-lg);
 
   &__header {
     align-items: center;
-    margin-bottom: var(--space-lg);
   }
   &__controls {
     gap: var(--space-sm);
-  }
-
-  &__search {
-    margin-bottom: var(--space-lg);
   }
   &__search-input {
     padding: var(--space-md) 40px var(--space-md) var(--space-md);
