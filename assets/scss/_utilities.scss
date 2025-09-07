@@ -55,6 +55,8 @@
   padding: var(--space-xl);
   box-shadow: var(--shadow);
   backdrop-filter: blur(10px);
+      width: clamp(300px, 100%, 90%);
+
   h3,
   h2 {
     margin-top: 0;
